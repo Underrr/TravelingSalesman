@@ -42,9 +42,9 @@ public class OptimalTSP{
 	* Returns: the total distance traveled
 	*	
 	*/
-	public static double distance(int[] order, Graph g){
+	public static double totalDistance(int[] order, Graph g){
 		double am[][] = g.getAM();
-		double distance = am[0][order[0]];
+		double tDistance = am[0][order[0]];
 		for(int i = 0; i < order.length; i++){
 			int start = order[i];
 			int end;
@@ -55,10 +55,10 @@ public class OptimalTSP{
 				end = order[i+1];
 			}
 
-			distance += am[start][end];
+			tDistance += am[start][end];
 
 		}
-		return distance;
+		return tDistance;
 	}
 
 	/*
@@ -75,7 +75,7 @@ public class OptimalTSP{
 		int size = numbers.length;
 		double d;
 		if(size == pos + 1){
-			d = distance(numbers, g);
+			d = totalDistance(numbers, g);
 			if(runthroughs == 0){
 				min = d;
 				minOrder = numbers.clone();

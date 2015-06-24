@@ -25,6 +25,8 @@ public class Graph{
     private static boolean visited[];
     private ArrayList<Edge> edges;
     private static int edgeCount;
+    private boolean[][] mst;
+    private LinkedHashMap<Integer, Integer> traversal;
 
     /*
     * Constructs a new graph
@@ -39,6 +41,8 @@ public class Graph{
         vertices = n;
         edges = new ArrayList<Edge>();
         edgeCount = 0;
+        traversal = new LinkedHashMap<Integer,Integer>();
+        mst = new boolean[n][n];
     }
 
     //returns the number of nodes in the graph
@@ -317,5 +321,106 @@ public class Graph{
         return distance;
     }
 
+    //Returns a list of the current neighbors
+    public ArrayList<Edge> getNeighbors(int k, Graph g){
+        ArrayList<Edge> e = new ArrayList<Edge>();
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
+            if (adjacencyMatrix[k][i] > 0) {
+                e.add(new Edge(i, k, g));
+            }
+        }
+        return e;
+    }
+
+    //Add an edge to the minimum spanning tree
+    public void addMstEdge(Edge e){
+        mst[e.row][e.column] = true;
+        mst[e.column][e.row] = true;
+    }
+
+    /*
+    * Checks if the given node is already in the MST
+    *
+    * Arguments:
+    *   n: the node to look for
+    *
+    * Returns:
+    *   true if the node is in the MST
+    *   false if the node isn't in the MST
+    * 
+    */
+    public boolean validMstNode(int n){
+        for(int i = 0; i < mst.length; i++){
+            if(mst[n][i]){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public LinkedHashMap<Integer, Integer> preorder(){
+        preorder(0, -1);
+        return traversal;
+    }
+
+    //Recursively processes the given node and all it's children in sorted order
+    public void preorder(int n, int i){
+        traversal.put(n, i);
+        for(Integer neighbor : getMstNeighbors(n)){
+            preorder(neighbor, n);
+        }
+    }
+
+    //Get all the neighbors of the current MST node
+    private ArrayList<Integer> getMstNeighbors(int n){
+        ArrayList<Integer> neighbors = new ArrayList<Integer>();
+        for (int i = 1; i < adjacencyMatrix.length; i++) {
+            if (mst[n][i] && !traversal.containsKey(i)) {
+                neighbors.add(i);
+            }
+        }
+        return neighbors;
+    }
+
+    //Get the traversal
+    public LinkedHashMap<Integer, Integer> getTraversal(){
+        return traversal;
+    }
+
+    //Returns total cost of MST
+    public double cost(){
+        double c = 0;
+        for(int i = 0; i < adjacencyMatrix.length; i++){
+            for(int j = 0; j < i; j++){
+                //check if edge is in MST
+                if(mst[i][j]){
+                    c += adjacencyMatrix[i][j];
+                }
+            }
+        }
+        return c;
+    }
+
+    //Returns the MST
+    public boolean[][] getMst(){
+        return mst;
+    }
+
+    /*
+    * Finds the total distance traveled for the problem (MST only)
+    *
+    * Returns:
+    *   total distance traveled by the salesman   
+    * 
+    */
+    public double traversalDistance() {
+        double distance = 0;
+        ArrayList<Integer> list = new ArrayList(traversal.keySet());
+        for (int i = 0; i < list.size()-1; i++) {
+            distance += adjacencyMatrix[list.get(i)][list.get(i+1)];
+        }
+        distance += adjacencyMatrix[list.get(0)][list.get(list.size()-1)];
+        return distance;
+    }
     public static void main(String args[]){}
 }

@@ -18,43 +18,43 @@ import java.util.Map;
 
 public class Graph{
 
-	private LinkedHashMap<Integer,Integer> coords;
-	private double adjacencyMatrix[][];
-	private static int vertices;
-	DecimalFormat df = new DecimalFormat("0.00");
+    private LinkedHashMap<Integer,Integer> coords;
+    private double adjacencyMatrix[][];
+    private static int vertices;
+    DecimalFormat df = new DecimalFormat("0.00");
     private static boolean visited[];
     private ArrayList<Edge> edges;
     private static int edgeCount;
 
-	/*
-	* Constructs a new graph
-	*
-	* Arguments:
-	*	n: the number of nodes in the graph
-	*
-	*/
-	public Graph(int n){
-		adjacencyMatrix = new double[n][n];
+    /*
+    * Constructs a new graph
+    *
+    * Arguments:
+    *   n: the number of nodes in the graph
+    *
+    */
+    public Graph(int n){
+        adjacencyMatrix = new double[n][n];
         coords = new LinkedHashMap<Integer,Integer>(n);
-		vertices = n;
+        vertices = n;
         edges = new ArrayList<Edge>();
         edgeCount = 0;
-	}
+    }
 
-	//returns the number of nodes in the graph
-	public int numberOfNodes(){
-		return vertices;
-	}
+    //returns the number of nodes in the graph
+    public int numberOfNodes(){
+        return vertices;
+    }
 
     //returns the hashmap containing the coordinates
     public LinkedHashMap<Integer,Integer> getCoords(){
         return coords;
     }
 
-	//returns the adjacency matrix
-	public double[][] getAM(){
-		return adjacencyMatrix;
-	}
+    //returns the adjacency matrix
+    public double[][] getAM(){
+        return adjacencyMatrix;
+    }
 
     /*
     * Get the weight of the edge between two given vertices
@@ -71,29 +71,29 @@ public class Graph{
         return adjacencyMatrix[row][col];
     }
 
-	/*
-	* Generates coordinates for the graph using the given seed
-	*
-	* Arguments:
-	* 	seed: the given seed for the Random()
-	* 
-	*/
-	public void generateCoords(long seed){
-		
-		Random xGen = new Random(seed);
-		Random yGen = new Random(2 * seed);
+    /*
+    * Generates coordinates for the graph using the given seed
+    *
+    * Arguments:
+    *   seed: the given seed for the Random()
+    * 
+    */
+    public void generateCoords(long seed){
+        
+        Random xGen = new Random(seed);
+        Random yGen = new Random(2 * seed);
 
-		while(coords.size() < vertices){
-			
-			int x = xGen.nextInt(vertices);
-			int y = yGen.nextInt(vertices);
+        while(coords.size() < vertices){
+            
+            int x = xGen.nextInt(vertices);
+            int y = yGen.nextInt(vertices);
 
-			if(coords.containsKey(x))
-				continue;
-			else
-				coords.put(x,y);
-		}
-	}
+            if(coords.containsKey(x))
+                continue;
+            else
+                coords.put(x,y);
+        }
+    }
 
     //Generates the edges for the graph
     public void generateEdges(Graph g) {
@@ -104,11 +104,11 @@ public class Graph{
         }
     }
 
-	//generates the adjacency matrix
-	public void generateAM(){
+    //generates the adjacency matrix
+    public void generateAM(){
         ArrayList<Map.Entry<Integer, Integer>> entries =
         new ArrayList<Map.Entry<Integer, Integer>>(coords.entrySet());
-		
+        
         for (int x = 0; x < entries.size(); x++) {
             for (int y = 0; y < entries.size(); y++) {
                 double weight = distance(entries.get(x), entries.get(y));
@@ -116,10 +116,10 @@ public class Graph{
                 adjacencyMatrix[y][x] = weight;
             }
         }
-	}
+    }
 
-	//prints out all the vertices
-	public void printVertices(){
+    //prints out all the vertices
+    public void printVertices(){
         System.out.println("X-Y Coordinates:");
 
         int index = 0;
@@ -129,23 +129,23 @@ public class Graph{
         }
 
         System.out.println("\n");
-	}
+    }
 
-	//prints out the adjacency matrix
-	public void printAM(){
-		System.out.println("Adjacency matrix of graph weights:\n");
-		for(int i = 0; i < vertices; i++){
-			System.out.printf("      %d", i);
-		}
-		System.out.println("\n");
-		for(int x = 0; x < vertices; x++){
-			System.out.printf("%d   ", x);
-			for(int y = 0; y < vertices; y++){
-				System.out.printf(df.format(adjacencyMatrix[x][y]) + "   ");
-			}
-			System.out.println("\n");
-		}
-	}
+    //prints out the adjacency matrix
+    public void printAM(){
+        System.out.println("Adjacency matrix of graph weights:\n");
+        for(int i = 0; i < vertices; i++){
+            System.out.printf("      %d", i);
+        }
+        System.out.println("\n");
+        for(int x = 0; x < vertices; x++){
+            System.out.printf("%d   ", x);
+            for(int y = 0; y < vertices; y++){
+                System.out.printf(df.format(adjacencyMatrix[x][y]) + "   ");
+            }
+            System.out.println("\n");
+        }
+    }
 
     /*
     * Gets the distance between two vertices
@@ -317,5 +317,5 @@ public class Graph{
         return distance;
     }
 
-	public static void main(String args[]){}
+    public static void main(String args[]){}
 }
